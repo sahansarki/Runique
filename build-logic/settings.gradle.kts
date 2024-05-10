@@ -10,6 +10,6 @@ dependencyResolutionManagement {
         }
     }
 }
-
 rootProject.name = "build-logic"
+
 include(":convention")

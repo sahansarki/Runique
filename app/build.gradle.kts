@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.runique.android.application.compose)
     alias(libs.plugins.runique.jvm.ktor)
+    alias(libs.plugins.mapsplatform.secrets.plugin)
 }
 
 android {
@@ -12,16 +13,18 @@ android {
             useSupportLibrary = true
         }
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    dynamicFeatures += setOf(":analytics:analytics_feature")
 }
 
 dependencies {
+
     // Coil
     implementation(libs.coil.compose)
 
@@ -42,8 +45,6 @@ dependencies {
 
     // Crypto
     implementation(libs.androidx.security.crypto.ktx)
-
-    implementation(libs.bundles.koin)
 
     api(libs.core)
 
@@ -68,7 +69,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.data)
     implementation(projects.core.database)
-    implementation(projects.core.notification)
 
     implementation(projects.auth.presentation)
     implementation(projects.auth.domain)
@@ -79,7 +79,4 @@ dependencies {
     implementation(projects.run.data)
     implementation(projects.run.location)
     implementation(projects.run.network)
-
-    implementation(projects.core.connectivity.domain)
-    implementation(projects.core.connectivity.data)
 }

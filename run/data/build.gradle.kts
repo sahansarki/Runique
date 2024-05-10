@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.runique.android.library)
+    alias(libs.plugins.runique.jvm.ktor)
 }
 
 android {
@@ -16,5 +17,4 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.database)
     implementation(projects.run.domain)
-    implementation(projects.core.connectivity.domain)
 }

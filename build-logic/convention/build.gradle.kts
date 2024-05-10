@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     `kotlin-dsl`
 }
@@ -6,7 +5,7 @@ plugins {
 group = "com.plcoding.runique.buildlogic"
 
 dependencies {
-    compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.android.gradlePlugin) // include only during compile
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
@@ -19,14 +18,12 @@ gradlePlugin {
             id = "runique.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+
         register("androidApplicationCompose") {
             id = "runique.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
-        register("androidApplicationWearCompose") {
-            id = "runique.android.application.wear.compose"
-            implementationClass = "AndroidApplicationWearComposeConventionPlugin"
-        }
+
         register("androidLibrary") {
             id = "runique.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
@@ -43,13 +40,9 @@ gradlePlugin {
             id = "runique.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
-        register("androidDynamicFeature") {
-            id = "runique.android.dynamic.feature"
-            implementationClass = "AndroidDynamicFeatureConventionPlugin"
-        }
         register("jvmLibrary") {
             id = "runique.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
+            implementationClass = "JvmConventionPlugin"
         }
         register("jvmKtor") {
             id = "runique.jvm.ktor"
