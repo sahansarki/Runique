@@ -60,7 +60,7 @@ fun IntroScreen(
                 .padding(bottom = 48.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.welcome_to_unique),
+                text = stringResource(id = R.string.welcome_to_runique),
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 20.sp
             )
@@ -68,7 +68,7 @@ fun IntroScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = stringResource(id = R.string.runique_descrption),
+                text = stringResource(id = R.string.runique_description),
                 style = MaterialTheme.typography.bodySmall,
 
                 )
