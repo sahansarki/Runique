@@ -7,7 +7,9 @@ import com.plcoding.auth.data.EmailPatternValidator
 import com.plcoding.auth.domain.PatternValidator
 import com.plcoding.auth.domain.UserDataValidator
 import com.plcoding.core.data.networking.auth.EncryptedSessionStorage
+import com.plcoding.runique.MainViewModel
 import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -21,4 +23,5 @@ val appModule = module {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+    viewModelOf(::MainViewModel)
 }
