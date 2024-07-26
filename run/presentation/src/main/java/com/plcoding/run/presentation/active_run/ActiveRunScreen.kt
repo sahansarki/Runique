@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -153,7 +154,7 @@ private fun ActiveRunScreen(
         ) {
             Column {
                 if (state.locationInfo != null) {
-                    Text(text = "${state.locationInfo.location.lat} - ${state.locationInfo.location.long}", modifier = Modifier.padding(16.dp).padding(padding))
+                    Text(text = "${state.locationInfo.location.lat} - ${state.locationInfo.location.long}", modifier = Modifier.padding(16.dp).padding(padding).fillMaxWidth(), color = Color.White)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 RunDataCard(
