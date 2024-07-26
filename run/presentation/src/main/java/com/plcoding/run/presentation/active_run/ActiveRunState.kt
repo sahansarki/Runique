@@ -1,6 +1,7 @@
 package com.plcoding.run.presentation.active_run
 
 import com.plcoding.core.domain.location.Location
+import com.plcoding.core.domain.location.LocationWithAltitude
 import com.plcoding.run.domain.model.RunData
 import kotlin.time.Duration
 
@@ -14,4 +15,5 @@ data class ActiveRunState(
     val isSavingRun: Boolean = false,
     val showLocationRationale: Boolean = false,
     val showNotificationRationale: Boolean = false,
+    val locationInfo: LocationWithAltitude? = null
 )

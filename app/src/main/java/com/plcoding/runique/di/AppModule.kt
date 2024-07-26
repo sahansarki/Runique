@@ -8,6 +8,8 @@ import com.plcoding.auth.domain.PatternValidator
 import com.plcoding.auth.domain.UserDataValidator
 import com.plcoding.core.data.networking.auth.EncryptedSessionStorage
 import com.plcoding.runique.MainViewModel
+import com.plcoding.runique.RuniqueApp
+import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
@@ -23,5 +25,10 @@ val appModule = module {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+
+    single<CoroutineScope> {
+        (androidApplication() as RuniqueApp).applicationScope
+    }
+
     viewModelOf(::MainViewModel)
 }
