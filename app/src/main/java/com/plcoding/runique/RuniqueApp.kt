@@ -4,6 +4,7 @@ import android.app.Application
 import com.plcoding.auth.data.di.authDataModule
 import com.plcoding.auth.presentation.di.authPresentationModule
 import com.plcoding.core.data.networking.di.coreDataModule
+import com.plcoding.run.presentation.di.runViewModelModule
 import com.plcoding.runique.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -23,7 +24,8 @@ class RuniqueApp : Application() {
                 authDataModule,
                 authPresentationModule,
                 appModule,
-                coreDataModule
+                coreDataModule,
+                runViewModelModule
             )
         }
     }

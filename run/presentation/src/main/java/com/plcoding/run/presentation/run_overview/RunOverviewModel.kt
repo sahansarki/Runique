@@ -1,4 +1,4 @@
-package com.plcoding.run.presentation
+package com.plcoding.run.presentation.run_overview
 
 import androidx.lifecycle.ViewModel
 

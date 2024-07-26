@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
-package com.plcoding.run.presentation
+package com.plcoding.run.presentation.run_overview
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,14 +22,23 @@ import com.plcoding.core.presentation.designsystem.components.RuniqueFloatingAct
 import com.plcoding.core.presentation.designsystem.components.RuniqueScaffold
 import com.plcoding.core.presentation.designsystem.components.RuniqueToolbar
 import com.plcoding.core.presentation.designsystem.components.util.DropDownItem
+import com.plcoding.run.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RunOverviewScreenRoot(
+    onStartRunClick: () -> Unit,
     viewModel: RunOverviewModel = koinViewModel()
 ) {
     RunOverviewScreen(
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when (action) {
+                RunOverViewAction.OnStartClick -> onStartRunClick.invoke()
+                else -> Unit
+            }
+
+            viewModel.onAction(action)
+        }
     )
 }
 
