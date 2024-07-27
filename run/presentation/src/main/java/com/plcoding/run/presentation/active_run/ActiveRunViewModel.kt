@@ -107,7 +107,7 @@ class ActiveRunViewModel(
 
             is ActiveRunAction.SubmitNotificationPermissionInfo -> {
                 state = state.copy(
-                    showNotificationRationale = action.showNotificationRationale
+                    showNotificationRationale = action.showNotificationPermissionRationale
                 )
             }
 

@@ -16,11 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -36,15 +33,16 @@ import com.plcoding.core.presentation.designsystem.components.RuniqueScaffold
 import com.plcoding.core.presentation.designsystem.components.RuniqueToolbar
 import com.plcoding.run.presentation.R
 import com.plcoding.run.presentation.active_run.components.RunDataCard
+import com.plcoding.run.presentation.active_run.maps.TrackerMap
 import com.plcoding.run.presentation.active_run.util.hasLocationPermission
 import com.plcoding.run.presentation.active_run.util.hasNotificationPermission
-import com.plcoding.run.presentation.active_run.util.shouldNotificationPermissionRationale
 import com.plcoding.run.presentation.active_run.util.shouldShowLocationPermissionRationale
+import com.plcoding.run.presentation.active_run.util.shouldShowNotificationPermissionRationale
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ActiveRunScreenRoot(
-    viewModel: ActiveRunViewModel = koinViewModel()
+    viewModel: ActiveRunViewModel = koinViewModel(),
 ) {
     ActiveRunScreen(
         state = viewModel.state,
@@ -52,15 +50,11 @@ fun ActiveRunScreenRoot(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ActiveRunScreen(
     state: ActiveRunState,
     onAction: (ActiveRunAction) -> Unit
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
     val context = LocalContext.current
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -68,11 +62,12 @@ private fun ActiveRunScreen(
         val hasCourseLocationPermission = perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
         val hasFineLocationPermission = perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
         val hasNotificationPermission = if (Build.VERSION.SDK_INT >= 33) {
-            perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
+            perms[Manifest.permission.POST_NOTIFICATIONS] == true
         } else true
+
         val activity = context as ComponentActivity
         val showLocationRationale = activity.shouldShowLocationPermissionRationale()
-        val showNotificationRationale = activity.shouldNotificationPermissionRationale()
+        val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
 
         onAction(
             ActiveRunAction.SubmitLocationPermissionInfo(
@@ -80,20 +75,18 @@ private fun ActiveRunScreen(
                 showLocationRationale = showLocationRationale
             )
         )
-
         onAction(
             ActiveRunAction.SubmitNotificationPermissionInfo(
                 acceptedNotificationPermission = hasNotificationPermission,
-                showNotificationRationale = showNotificationRationale
+                showNotificationPermissionRationale = showNotificationRationale
             )
         )
-
     }
 
     LaunchedEffect(key1 = true) {
         val activity = context as ComponentActivity
         val showLocationRationale = activity.shouldShowLocationPermissionRationale()
-        val showNotificationRationale = activity.shouldShowLocationPermissionRationale()
+        val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
 
         onAction(
             ActiveRunAction.SubmitLocationPermissionInfo(
@@ -104,11 +97,11 @@ private fun ActiveRunScreen(
         onAction(
             ActiveRunAction.SubmitNotificationPermissionInfo(
                 acceptedNotificationPermission = context.hasNotificationPermission(),
-                showNotificationRationale = showNotificationRationale
+                showNotificationPermissionRationale = showNotificationRationale
             )
         )
 
-        if (!showLocationRationale && !showNotificationRationale) {
+        if(!showLocationRationale && !showNotificationRationale) {
             permissionLauncher.requestRuniquePermissions(context)
         }
     }
@@ -120,7 +113,7 @@ private fun ActiveRunScreen(
                 showBackButton = true,
                 title = stringResource(id = R.string.active_run),
                 onBackClick = {
-                    onAction.invoke(ActiveRunAction.OnBackClick)
+                    onAction(ActiveRunAction.OnBackClick)
                 },
             )
         },
@@ -132,7 +125,7 @@ private fun ActiveRunScreen(
                     StartIcon
                 },
                 onClick = {
-                    onAction.invoke(ActiveRunAction.OnToggleRunClick)
+                    onAction(ActiveRunAction.OnToggleRunClick)
                 },
                 iconSize = 20.dp,
                 contentDescription = if (state.shouldTrack) {
@@ -148,6 +141,14 @@ private fun ActiveRunScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
+            TrackerMap(
+                isRunFinished = state.isRunFinished,
+                currentLocation = state.currentLocation,
+                locations = state.runData.locations,
+                onSnapshot = {},
+                modifier = Modifier
+                    .fillMaxSize()
+            )
             RunDataCard(
                 elapsedTime = state.elapsedTime,
                 runData = state.runData,
@@ -156,7 +157,6 @@ private fun ActiveRunScreen(
                     .padding(padding)
                     .fillMaxWidth()
             )
-
         }
     }
 
@@ -168,11 +168,9 @@ private fun ActiveRunScreen(
                 state.showLocationRationale && state.showNotificationRationale -> {
                     stringResource(id = R.string.location_notification_rationale)
                 }
-
                 state.showLocationRationale -> {
                     stringResource(id = R.string.location_rationale)
                 }
-
                 else -> {
                     stringResource(id = R.string.notification_rationale)
                 }
@@ -189,8 +187,6 @@ private fun ActiveRunScreen(
             }
         )
     }
-
-
 }
 
 private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
@@ -203,7 +199,7 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
     )
-    val notificationPermission = if (Build.VERSION.SDK_INT >= 33) {
+    val notificationPermission = if(Build.VERSION.SDK_INT >= 33) {
         arrayOf(Manifest.permission.POST_NOTIFICATIONS)
     } else arrayOf()
 
@@ -211,7 +207,6 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
         !hasLocationPermission && !hasNotificationPermission -> {
             launch(locationPermissions + notificationPermission)
         }
-
         !hasLocationPermission -> launch(locationPermissions)
         !hasNotificationPermission -> launch(notificationPermission)
     }
@@ -226,6 +221,4 @@ private fun ActiveRunScreenPreview() {
             onAction = {}
         )
     }
-
-
 }

@@ -11,8 +11,9 @@ fun ComponentActivity.shouldShowLocationPermissionRationale(): Boolean {
     return shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
 }
 
-fun ComponentActivity.shouldNotificationPermissionRationale(): Boolean {
-    return Build.VERSION.SDK_INT >= 33 && shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
+fun ComponentActivity.shouldShowNotificationPermissionRationale(): Boolean {
+    return Build.VERSION.SDK_INT >= 33 &&
+            shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
 }
 
 private fun Context.hasPermission(permission: String): Boolean {
@@ -27,7 +28,7 @@ fun Context.hasLocationPermission(): Boolean {
 }
 
 fun Context.hasNotificationPermission(): Boolean {
-    return if (Build.VERSION.SDK_INT >= 33) {
+    return if(Build.VERSION.SDK_INT >= 33) {
         hasPermission(Manifest.permission.POST_NOTIFICATIONS)
     } else true
 }

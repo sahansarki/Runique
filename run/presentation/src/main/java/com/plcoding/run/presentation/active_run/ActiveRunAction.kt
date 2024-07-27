@@ -9,11 +9,9 @@ sealed interface ActiveRunAction {
         val acceptedLocationPermission: Boolean,
         val showLocationRationale: Boolean
     ): ActiveRunAction
-
     data class SubmitNotificationPermissionInfo(
         val acceptedNotificationPermission: Boolean,
-        val showNotificationRationale: Boolean
+        val showNotificationPermissionRationale: Boolean
     ): ActiveRunAction
-
     data object DismissRationaleDialog: ActiveRunAction
 }
