@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,9 +28,9 @@ fun RuniqueDialog(
     title: String,
     onDismiss: () -> Unit,
     description: String,
-    primaryButton: @Composable () -> Unit,
+    primaryButton: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    secondaryButton: @Composable () -> Unit = {}
+    secondaryButton: @Composable RowScope.() -> Unit = {}
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Column(
@@ -75,12 +76,18 @@ private fun RuniqueDialogPrev() {
             onDismiss = { /* Do something when the dialog is dismissed */ },
             description = "This is a sample description for the dialog. It provides more details about the purpose of the dialog.",
             primaryButton = {
-                Button(onClick = { /* Do something when the primary button is clicked */ }) {
+                Button(
+                    onClick = { /* Do something when the primary button is clicked */ },
+                    modifier = Modifier.weight(1f)
+                ) {
                     Text("Confirm")
                 }
             },
             secondaryButton = {
-                Button(onClick = { /* Do something when the secondary button is clicked */ }) {
+                Button(
+                    onClick = { /* Do something when the secondary button is clicked */ },
+                    modifier = Modifier.weight(1f)
+                ) {
                     Text("Cancel")
                 }
             }
