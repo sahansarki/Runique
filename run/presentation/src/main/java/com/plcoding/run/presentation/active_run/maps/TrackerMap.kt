@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
@@ -87,6 +86,8 @@ fun TrackerMap(
         ),
         modifier = modifier
     ) {
+        RuniquePolylines(locations = locations)
+
         if(!isRunFinished && currentLocation != null) {
             MarkerComposable(
                 currentLocation,
