@@ -4,6 +4,7 @@ import android.app.Application
 import com.plcoding.auth.data.di.authDataModule
 import com.plcoding.auth.presentation.di.authPresentationModule
 import com.plcoding.core.data.networking.di.coreDataModule
+import com.plcoding.core.database.di.databaseModule
 import com.plcoding.run.location.di.locationModule
 import com.plcoding.run.presentation.di.runPresentationModule
 import com.plcoding.runique.di.appModule
@@ -31,7 +32,8 @@ class RuniqueApp : Application() {
                 appModule,
                 coreDataModule,
                 runPresentationModule,
-                locationModule
+                locationModule,
+                databaseModule
             )
         }
     }
