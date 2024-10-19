@@ -1,18 +1,23 @@
 package com.plcoding.core.data.run
 
+import com.plcoding.core.data.networking.get
 import com.plcoding.core.database.dao.RunPendingSyncDao
 import com.plcoding.core.database.mapper.toRun
-import com.plcoding.core.domain.run.SyncRunScheduler
 import com.plcoding.core.domain.run.LocalRunDataSource
 import com.plcoding.core.domain.run.RemoteRunDataSource
 import com.plcoding.core.domain.run.Run
 import com.plcoding.core.domain.run.RunId
 import com.plcoding.core.domain.run.RunRepository
+import com.plcoding.core.domain.run.SyncRunScheduler
 import com.plcoding.core.domain.util.DataError
 import com.plcoding.core.domain.util.EmptyResult
 import com.plcoding.core.domain.util.Result
 import com.plcoding.core.domain.util.SessionStorage
 import com.plcoding.core.domain.util.asEmptyDataResult
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import io.ktor.client.plugins.plugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -26,7 +31,8 @@ class OfflineFirstRunRepository(
     private val applicationScope: CoroutineScope,
     private val runPendingSyncDao: RunPendingSyncDao,
     private val sessionStorage: SessionStorage,
-    private val syncRunScheduler: SyncRunScheduler
+    private val syncRunScheduler: SyncRunScheduler,
+    private val client: HttpClient
 
 ) : RunRepository {
     override fun getRuns(): Flow<List<Run>> {
@@ -143,5 +149,21 @@ class OfflineFirstRunRepository(
             createJobs.forEach { it.join() }
             deleteJobs.forEach { it.join() }
         }
+    }
+
+    override suspend fun deleteAllRuns() {
+        localRunDataSource.deleteAllRuns()
+    }
+
+    override suspend fun logout(): EmptyResult<DataError.Network> {
+        val result = client.get<Unit>(
+            route = "/logout"
+        ).asEmptyDataResult()
+
+        client.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>()
+            .firstOrNull()
+            ?.clearToken()
+
+        return result
     }
 }
