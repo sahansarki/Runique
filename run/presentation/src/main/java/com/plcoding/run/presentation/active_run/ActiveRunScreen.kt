@@ -4,6 +4,7 @@ package com.plcoding.run.presentation.active_run
 
 import android.Manifest
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -40,6 +41,7 @@ import com.plcoding.run.presentation.active_run.util.hasNotificationPermission
 import com.plcoding.run.presentation.active_run.util.shouldShowLocationPermissionRationale
 import com.plcoding.run.presentation.active_run.util.shouldShowNotificationPermissionRationale
 import org.koin.androidx.compose.koinViewModel
+import java.io.ByteArrayOutputStream
 
 @Composable
 fun ActiveRunScreenRoot(
@@ -105,7 +107,7 @@ private fun ActiveRunScreen(
             )
         )
 
-        if(!showLocationRationale && !showNotificationRationale) {
+        if (!showLocationRationale && !showNotificationRationale) {
             permissionLauncher.requestRuniquePermissions(context)
         }
     }
@@ -161,7 +163,17 @@ private fun ActiveRunScreen(
                 isRunFinished = state.isRunFinished,
                 currentLocation = state.currentLocation,
                 locations = state.runData.locations,
-                onSnapshot = {},
+                onSnapshot = { bmp ->
+                    val stream = ByteArrayOutputStream()
+                    stream.use {
+                        bmp.compress(
+                            Bitmap.CompressFormat.JPEG,
+                            80,
+                            it
+                        )
+                    }
+                    onAction(ActiveRunAction.OnRunProcessed(stream.toByteArray()))
+                },
                 modifier = Modifier
                     .fillMaxSize()
             )
@@ -212,9 +224,11 @@ private fun ActiveRunScreen(
                 state.showLocationRationale && state.showNotificationRationale -> {
                     stringResource(id = R.string.location_notification_rationale)
                 }
+
                 state.showLocationRationale -> {
                     stringResource(id = R.string.location_rationale)
                 }
+
                 else -> {
                     stringResource(id = R.string.notification_rationale)
                 }
@@ -243,7 +257,7 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
     )
-    val notificationPermission = if(Build.VERSION.SDK_INT >= 33) {
+    val notificationPermission = if (Build.VERSION.SDK_INT >= 33) {
         arrayOf(Manifest.permission.POST_NOTIFICATIONS)
     } else arrayOf()
 
@@ -251,6 +265,7 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
         !hasLocationPermission && !hasNotificationPermission -> {
             launch(locationPermissions + notificationPermission)
         }
+
         !hasLocationPermission -> launch(locationPermissions)
         !hasNotificationPermission -> launch(notificationPermission)
     }
