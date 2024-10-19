@@ -2,7 +2,7 @@ package com.plcoding.core.data.run
 
 import com.plcoding.core.database.dao.RunPendingSyncDao
 import com.plcoding.core.database.mapper.toRun
-import com.plcoding.core.domain.SyncRunScheduler
+import com.plcoding.core.domain.run.SyncRunScheduler
 import com.plcoding.core.domain.run.LocalRunDataSource
 import com.plcoding.core.domain.run.RemoteRunDataSource
 import com.plcoding.core.domain.run.Run

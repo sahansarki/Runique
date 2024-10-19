@@ -13,7 +13,7 @@ import com.plcoding.core.database.dao.RunPendingSyncDao
 import com.plcoding.core.database.entity.DeletedRunSyncEntity
 import com.plcoding.core.database.entity.RunPendingSyncEntity
 import com.plcoding.core.database.mapper.toRunEntity
-import com.plcoding.core.domain.SyncRunScheduler
+import com.plcoding.core.domain.run.SyncRunScheduler
 import com.plcoding.core.domain.run.Run
 import com.plcoding.core.domain.run.RunId
 import com.plcoding.core.domain.util.SessionStorage
@@ -27,7 +27,6 @@ import kotlin.time.toJavaDuration
 
 class SyncRunWorkerScheduler(
     private val context: Context,
-    private val pendingSyncType: SyncRunScheduler.SyncType,
     private val sessionStorage: SessionStorage,
     private val pendingSyncDao: RunPendingSyncDao,
     private val applicationScope: CoroutineScope

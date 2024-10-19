@@ -1,6 +1,6 @@
 package com.plcoding.run.data.di
 
-import com.plcoding.core.domain.SyncRunScheduler
+import com.plcoding.core.domain.run.SyncRunScheduler
 import com.plcoding.run.data.CreateRunWorker
 import com.plcoding.run.data.DeleteRunWorker
 import com.plcoding.run.data.FetchRunsWorker

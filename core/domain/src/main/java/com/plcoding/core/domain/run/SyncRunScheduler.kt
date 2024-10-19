@@ -1,7 +1,5 @@
-package com.plcoding.core.domain
+package com.plcoding.core.domain.run
 
-import com.plcoding.core.domain.run.Run
-import com.plcoding.core.domain.run.RunId
 import kotlin.time.Duration
 
 interface SyncRunScheduler {
