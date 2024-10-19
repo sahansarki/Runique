@@ -3,11 +3,12 @@ package com.plcoding.runique
 import android.app.Application
 import com.plcoding.auth.data.di.authDataModule
 import com.plcoding.auth.presentation.di.authPresentationModule
-import com.plcoding.core.data.networking.di.coreDataModule
+import com.plcoding.core.data.di.coreDataModule
 import com.plcoding.core.database.di.databaseModule
 import com.plcoding.run.location.di.locationModule
 import com.plcoding.run.presentation.di.runPresentationModule
 import com.plcoding.runique.di.appModule
+import com.plconidg.network.di.networkModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -33,7 +34,8 @@ class RuniqueApp : Application() {
                 coreDataModule,
                 runPresentationModule,
                 locationModule,
-                databaseModule
+                databaseModule,
+                networkModule
             )
         }
     }

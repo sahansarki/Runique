@@ -32,7 +32,6 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapEffect
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
@@ -41,13 +40,11 @@ import com.plcoding.core.domain.location.Location
 import com.plcoding.core.domain.location.LocationTimestamp
 import com.plcoding.core.presentation.designsystem.RunIcon
 import com.plcoding.run.presentation.R
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(MapsComposeExperimentalApi::class, DelicateCoroutinesApi::class)
 @Composable
 fun TrackerMap(
     isRunFinished: Boolean,
@@ -95,7 +92,6 @@ fun TrackerMap(
     var triggerCapture by remember {
         mutableStateOf(false)
     }
-
     var createSnapshotJob: Job? = remember {
         null
     }
@@ -118,15 +114,14 @@ fun TrackerMap(
                         triggerCapture = true
                     }
                 }
-        } else {
-            modifier
-        }
+        } else modifier
     ) {
         RuniquePolylines(locations = locations)
 
-        MapEffect(locations, isRunFinished, triggerCapture) { map ->
-            if (isRunFinished && triggerCapture && createSnapshotJob != null) {
+        MapEffect(locations, isRunFinished, triggerCapture, createSnapshotJob) { map ->
+            if (isRunFinished && triggerCapture && createSnapshotJob == null) {
                 triggerCapture = false
+
                 val boundsBuilder = LatLngBounds.builder()
                 locations.flatten().forEach { location ->
                     boundsBuilder
@@ -143,16 +138,19 @@ fun TrackerMap(
                         100
                     )
                 )
+
                 map.setOnCameraIdleListener {
                     createSnapshotJob?.cancel()
                     createSnapshotJob = GlobalScope.launch {
-                        // Make sure the map is sharp and focused before taking ss
+                        // Make sure the map is sharp and focused before taking
+                        // the screenshot
                         delay(500L)
                         map.awaitSnapshot()?.let(onSnapshot)
                     }
                 }
             }
         }
+
         if (!isRunFinished && currentLocation != null) {
             MarkerComposable(
                 currentLocation,

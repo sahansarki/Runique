@@ -6,7 +6,7 @@ import androidx.security.crypto.MasterKey
 import com.plcoding.auth.data.EmailPatternValidator
 import com.plcoding.auth.domain.PatternValidator
 import com.plcoding.auth.domain.UserDataValidator
-import com.plcoding.core.data.networking.auth.EncryptedSessionStorage
+import com.plcoding.core.data.auth.EncryptedSessionStorage
 import com.plcoding.runique.MainViewModel
 import com.plcoding.runique.RuniqueApp
 import kotlinx.coroutines.CoroutineScope

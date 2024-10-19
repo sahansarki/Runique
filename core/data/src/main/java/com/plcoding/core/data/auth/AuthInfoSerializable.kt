@@ -1,4 +1,4 @@
-package com.plcoding.core.data.networking.auth
+package com.plcoding.core.data.auth
 
 import kotlinx.serialization.Serializable
 
