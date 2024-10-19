@@ -75,7 +75,7 @@ class OfflineFirstRunRepository(
             runPendingSyncDao.deleteRunPendingSyncEntity(id)
             return
         }
-        applicationScope.async {
+        val remoteResult = applicationScope.async {
             remoteRunDataSource.deleteRun(id)
         }.await()
     }
