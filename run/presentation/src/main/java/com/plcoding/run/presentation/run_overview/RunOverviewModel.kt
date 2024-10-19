@@ -25,6 +25,7 @@ class RunOverviewModel(
         }.launchIn(viewModelScope)
 
         viewModelScope.launch {
+            runRepository.syncPendingRuns()
             runRepository.fetchRuns()
         }
     }
