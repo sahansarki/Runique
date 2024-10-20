@@ -5,6 +5,6 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
 
-val runPresentationModule = module {
+val wearPresentationModule = module {
     viewModelOf(::TrackerViewModel)
 }
