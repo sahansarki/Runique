@@ -24,6 +24,11 @@ gradlePlugin {
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
 
+        register("androidApplicationWearCompose") {
+            id = "runique.android.application.wear.compose"
+            implementationClass = "AndroidApplicationWearComposeConventionPlugin"
+        }
+
         register("androidLibrary") {
             id = "runique.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
