@@ -12,7 +12,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.play.services.wearable)
     implementation(libs.bundles.koin)
-
+    implementation(libs.kotlinx.serialization.json)
     implementation(projects.core.domain)
     implementation(projects.core.connectivity.domain)
 }
