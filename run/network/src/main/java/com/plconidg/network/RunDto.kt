@@ -1,4 +1,4 @@
-package com.plconidg.network
+package com.plcoding.run.network
 
 import kotlinx.serialization.Serializable
 
@@ -13,5 +13,7 @@ data class RunDto(
     val avgSpeedKmh: Double,
     val maxSpeedKmh: Double,
     val totalElevationMeters: Int,
-    val mapPictureUrl: String?
+    val mapPictureUrl: String?,
+    val avgHeartRate: Int?,
+    val maxHeartRate: Int?
 )

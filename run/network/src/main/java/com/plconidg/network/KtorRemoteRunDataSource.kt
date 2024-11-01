@@ -10,6 +10,7 @@ import com.plcoding.core.domain.util.DataError
 import com.plcoding.core.domain.util.EmptyResult
 import com.plcoding.core.domain.util.Result
 import com.plcoding.core.domain.util.map
+import com.plcoding.run.network.RunDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData

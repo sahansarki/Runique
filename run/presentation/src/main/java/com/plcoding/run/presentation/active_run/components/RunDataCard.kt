@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.plcoding.core.presentation.designsystem.RuniqueTheme
 import com.plcoding.core.presentation.ui.formatted
+import com.plcoding.core.presentation.ui.toFormattedHeartRate
 import com.plcoding.core.presentation.ui.toFormattedKm
 import com.plcoding.core.presentation.ui.toFormattedPace
 import com.plcoding.run.domain.model.RunData
@@ -39,7 +40,7 @@ fun RunDataCard(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(15.dp))
-            .background(color = MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -48,9 +49,7 @@ fun RunDataCard(
             value = elapsedTime.formatted(),
             valueFontSize = 32.sp
         )
-
         Spacer(modifier = Modifier.height(24.dp))
-
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -63,7 +62,12 @@ fun RunDataCard(
                 modifier = Modifier
                     .defaultMinSize(minWidth = 75.dp)
             )
-
+            RunDataItem(
+                title = stringResource(id = R.string.heart_rate),
+                value = runData.heartRates.lastOrNull().toFormattedHeartRate(),
+                modifier = Modifier
+                    .defaultMinSize(minWidth = 75.dp)
+            )
             RunDataItem(
                 title = stringResource(id = R.string.pace),
                 value = elapsedTime.toFormattedPace(
@@ -92,7 +96,6 @@ private fun RunDataItem(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 12.sp
         )
-
         Text(
             text = value,
             color = MaterialTheme.colorScheme.onSurface,
@@ -108,8 +111,9 @@ private fun RunDataCardPreview() {
         RunDataCard(
             elapsedTime = 10.minutes,
             runData = RunData(
-                distanceMeters = 99999999999992133.toInt(),
-                pace = 3.minutes
+                distanceMeters = 3425,
+                pace = 3.minutes,
+                heartRates = listOf(150)
             )
         )
     }
